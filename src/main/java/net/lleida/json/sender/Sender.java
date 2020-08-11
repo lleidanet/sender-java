@@ -1,4 +1,4 @@
-package net.lleida.json;
+package net.lleida.json.sender;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,4 +1,4 @@
-package net.lleida.json;
+package net.lleida.json.sender;
 
 import java.util.HashMap;
 import java.util.Map;

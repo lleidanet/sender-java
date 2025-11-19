@@ -36,12 +36,6 @@ public class Sender {
 
     private static final int MAX_LENGTH_PREMIUM_NUMBERS = 5;
 
-    private static final String[] MIMETYPES = {
-        "image/gif", "image/png", "image/jpeg",
-        "audio/amr", "audio/x-wav", "audio/mpeg",
-        "audio/midi", "video/3gpp", "video/mpeg"
-    };
-
     private static final String[] LANGUAGES = {
         "ES", "CA", "EN", "FR", "DE",
         "IT", "NL", "PT", "PL", "SE"
@@ -326,7 +320,6 @@ public class Sender {
         }
 
         options_job.add("user",     this.user);
-        options_job.add("apikey", this.apikey);
         options_job.add("user_id",  id);
         options_job.add("dst",      this.make_dst(dst));
 
@@ -342,7 +335,6 @@ public class Sender {
     private String make_json_status(String request, String id) {
         return Json.createObjectBuilder()
             .add("user",     this.user)
-            .add("apikey", this.apikey)
             .add("user_id",  id)
             .add("request",  request)
             .build()
@@ -418,33 +410,6 @@ public class Sender {
             options_job.add("delivery_receipt", delivery_receipt_job.build());
         }
         return options_job.build();
-    }
-
-    private void check_attachment(JsonObject attachment){
-        if(!attachment.containsKey("mime")){
-            throw new IllegalArgumentException("Invalid attachment format, unknown mimetype!");
-        }
-
-        String mime = attachment.getString("mime");
-        if(!this.check_mimetype(mime)){
-            throw new IllegalArgumentException("Invalid mimetype!");
-        }
-
-        if(!attachment.containsKey("content")){
-            throw new IllegalArgumentException("Invalid attachment format, unknown content!");
-        }
-
-        String content = attachment.getString("content");
-        if(content.isEmpty()){
-            throw new IllegalArgumentException("Empty attachment content!");
-        }
-        if(!this.isBase64Encoded(content)){
-            throw new IllegalArgumentException("Invalid attachment format, unknown content format!");
-        }
-    }
-
-    private boolean isBase64Encoded(String data){
-        return data.length() >= 15 && data.matches("^[a-zA-Z0-9/+]*={0,2}$");
     }
 
     private String check_registered_type(String type) throws IllegalArgumentException{
@@ -596,17 +561,6 @@ public class Sender {
         return value.equals("1") || value.equals("true") || value.equals("on") || value.equals("yes") || value.equals("y");
     }
 
-    private boolean check_mimetype(String mime){
-        boolean result = false;
-        for(String m: Sender.MIMETYPES){
-            if(m.equals(mime)){
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
     /* removing apikeys for log */
     private JsonObject protect_json(String json){
         JsonObject object = Json.createReader(new StringReader(json)).readObject();
@@ -641,6 +595,7 @@ public class Sender {
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("Authorization", "x-api-key " + apikey);
         OutputStream os = con.getOutputStream();
         os.write(json.getBytes());
         os.flush();

@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>Sender</name>
-    <description>Java implementation of Lleida.net Send SMS, Send MMS and Messages HTTP APIs</description>
+    <description>Java implementation of Lleida.net Send SMS and Messages HTTP APIs</description>
     <url>https://github.com/lleidanet/sender-java</url>
 
     <licenses>

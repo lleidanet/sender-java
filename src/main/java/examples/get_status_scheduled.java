@@ -5,10 +5,10 @@ import net.lleida.json.sender.Status;
 import java.io.IOException;
 
 public class get_status_scheduled {
-    
+
     public static void main(String[] args) {
         try{
-            Sender sender = new Sender(Config.USERNAME, Config.PASSWORD);
+            Sender sender = new Sender(Config.USERNAME, Config.APIKEY);
             sender.setLogger(Config.RESOURCES_PATH + "logger.log");
 
             String id = ""; /* <- Your Scheduled SMS identifier here */
@@ -20,5 +20,5 @@ public class get_status_scheduled {
             System.err.println(ex.toString());
         }
     }
-    
+
 }

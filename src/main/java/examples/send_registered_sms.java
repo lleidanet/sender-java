@@ -14,7 +14,7 @@ public class send_registered_sms {
      */
     public static void main(String[] args) {
         try{
-            Sender sender = new Sender(Config.USERNAME, Config.PASSWORD);
+            Sender sender = new Sender(Config.USERNAME, Config.APIKEY);
             sender.setLogger(Config.RESOURCES_PATH + "logger.log");
 
             Random r = new Random();
@@ -22,7 +22,7 @@ public class send_registered_sms {
             String id = Integer.toString(Math.abs(r.nextInt()));
             JsonArray dst = Json.createArrayBuilder().add(Config.RECIPIENT).build();
             String text = "This is a Registered SMS";
-            
+
             JsonObject delivery_receipt = Json.createObjectBuilder()
                 .add("lang",        "EN")
                 .add("cert_type",   "D")
@@ -31,14 +31,14 @@ public class send_registered_sms {
             JsonObject options = Json.createObjectBuilder()
                 .add("delivery_receipt", delivery_receipt)
                 .build();
-            
+
             boolean queued = sender.registeredSMS(id, dst, text, options);
 
             if(sender.errno != 0){
                 System.err.println(sender.errno + ":" + sender.error);
                 System.err.println("");
             }
-            
+
             if(queued){
                 Status status = sender.getStatusSMS(id);
                 System.out.println("ID: " + id);
@@ -49,5 +49,5 @@ public class send_registered_sms {
             System.err.println(ex.toString());
         }
     }
-    
+
 }

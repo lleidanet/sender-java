@@ -48,7 +48,7 @@ public class Sender {
     };
 
     private final String user;
-    private final String password;
+    private final String apikey;
     private String lang;
 
     /**
@@ -66,20 +66,20 @@ public class Sender {
     /**
      * Constructs a Sender instance.
      * @param user your api username
-     * @param password your api password
+     * @param apikey your api key
      * @param lang language
      * @throws IllegalArgumentException
      */
-    public Sender(String user, String password, String lang) throws IllegalArgumentException{
+    public Sender(String user, String apikey, String lang) throws IllegalArgumentException{
         if(user == null || user.isEmpty()) {
             throw new IllegalArgumentException("Empty user!");
         }
-        if(password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("Empty password!");
+        if(apikey == null || apikey.isEmpty()) {
+            throw new IllegalArgumentException("Empty apikey!");
         }
 
         this.user = user;
-        this.password = password;
+        this.apikey = apikey;
         this.setLang(lang);
 
         this.errno = 0;
@@ -89,11 +89,11 @@ public class Sender {
     /**
      * Constructs a Sender instance.
      * @param user your api username
-     * @param password your api password
+     * @param apikey your api key
      * @throws IllegalArgumentException
      */
-    public Sender(String user, String password) throws IllegalArgumentException{
-        this(user, password, "EN");
+    public Sender(String user, String apikey) throws IllegalArgumentException{
+        this(user, apikey, "EN");
     }
 
     /**
@@ -326,7 +326,7 @@ public class Sender {
         }
 
         options_job.add("user",     this.user);
-        options_job.add("password", this.password);
+        options_job.add("apikey", this.apikey);
         options_job.add("user_id",  id);
         options_job.add("dst",      this.make_dst(dst));
 
@@ -342,7 +342,7 @@ public class Sender {
     private String make_json_status(String request, String id) {
         return Json.createObjectBuilder()
             .add("user",     this.user)
-            .add("password", this.password)
+            .add("apikey", this.apikey)
             .add("user_id",  id)
             .add("request",  request)
             .build()
@@ -607,7 +607,7 @@ public class Sender {
         return result;
     }
 
-    /* removing passwords for log */
+    /* removing apikeys for log */
     private JsonObject protect_json(String json){
         JsonObject object = Json.createReader(new StringReader(json)).readObject();
         JsonObjectBuilder object_job = Json.createObjectBuilder(object);
@@ -618,8 +618,8 @@ public class Sender {
 
             if(obj.getValueType() == JsonValue.ValueType.OBJECT){
                 object_job.add(key, this.protect_json(obj.toString()));
-            }else if(key.equals("password")){
-                object_job.add(key, "censored password");
+            }else if(key.equals("apikey")){
+                object_job.add(key, "censored apikey");
             }
         }
 

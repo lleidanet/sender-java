@@ -11,7 +11,7 @@ import javax.json.JsonObject;
 public class send_sms {
     public static void main(String[] args){
         try{
-            Sender sender = new Sender(Config.USERNAME, Config.PASSWORD);
+            Sender sender = new Sender(Config.USERNAME, Config.APIKEY);
             sender.setLogger(Config.RESOURCES_PATH + "logger.log");
 
             Random r = new Random();
@@ -28,7 +28,7 @@ public class send_sms {
                 System.err.println(sender.errno + ":" + sender.error);
                 System.err.println("");
             }
-            
+
             if(queued){
                 Status status = sender.getStatusSMS(id);
                 System.out.println("ID: " + id);
@@ -39,5 +39,5 @@ public class send_sms {
             System.err.println(ex.toString());
         }
     }
-    
+
 }

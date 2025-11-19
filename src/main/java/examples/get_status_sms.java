@@ -11,7 +11,7 @@ public class get_status_sms {
      */
     public static void main(String[] args) {
         try{
-            Sender sender = new Sender(Config.USERNAME, Config.PASSWORD);
+            Sender sender = new Sender(Config.USERNAME, Config.APIKEY);
             sender.setLogger(Config.RESOURCES_PATH + "logger.log");
 
             String id = ""; /* <- Your SMS identifier here */
@@ -23,5 +23,5 @@ public class get_status_sms {
             System.err.println(ex.toString());
         }
     }
-    
+
 }

@@ -3,3 +3,4 @@ nbactions.xml
 /target/
 *.asc
 resources/logger.log
+.vscode

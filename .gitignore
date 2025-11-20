@@ -1,5 +1,7 @@
+.vscode
+*.asc
 nb-configuration.xml
 nbactions.xml
-/target/
-*.asc
+target
+test
 resources/logger.log

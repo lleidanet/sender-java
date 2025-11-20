@@ -13,8 +13,8 @@ public class send_registered_sms {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try{
-            Sender sender = new Sender(Config.USERNAME, Config.PASSWORD);
+        try {
+            Sender sender = new Sender(Config.USERNAME, Config.APIKEY);
             sender.setLogger(Config.RESOURCES_PATH + "logger.log");
 
             Random r = new Random();
@@ -22,32 +22,32 @@ public class send_registered_sms {
             String id = Integer.toString(Math.abs(r.nextInt()));
             JsonArray dst = Json.createArrayBuilder().add(Config.RECIPIENT).build();
             String text = "This is a Registered SMS";
-            
+
             JsonObject delivery_receipt = Json.createObjectBuilder()
-                .add("lang",        "EN")
-                .add("cert_type",   "D")
-                .add("email",       "INTERNALID")
-                .build();
+                    .add("lang", "EN")
+                    .add("cert_type", "D")
+                    .add("email", "INTERNALID")
+                    .build();
             JsonObject options = Json.createObjectBuilder()
-                .add("delivery_receipt", delivery_receipt)
-                .build();
-            
+                    .add("delivery_receipt", delivery_receipt)
+                    .build();
+
             boolean queued = sender.registeredSMS(id, dst, text, options);
 
-            if(sender.errno != 0){
+            if (sender.errno != 0) {
                 System.err.println(sender.errno + ":" + sender.error);
                 System.err.println("");
             }
-            
-            if(queued){
+
+            if (queued) {
                 Status status = sender.getStatusSMS(id);
                 System.out.println("ID: " + id);
                 System.out.println("Status: " + status.getKey());
                 System.out.println("Status: " + status.getCode() + " => " + status.getDescription());
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.err.println(ex.toString());
         }
     }
-    
+
 }

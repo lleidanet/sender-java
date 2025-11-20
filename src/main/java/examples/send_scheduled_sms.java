@@ -10,7 +10,7 @@ import javax.json.JsonObject;
 public class send_scheduled_sms {
 
     public static void main(String[] args) {
-        try{
+        try {
             Sender sender = new Sender(Config.USERNAME, Config.APIKEY);
             sender.setLogger(Config.RESOURCES_PATH + "logger.log");
 
@@ -24,27 +24,27 @@ public class send_scheduled_sms {
             long schedule = timestamp + 60L * 5L * 1000L;
 
             String dateNow = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new java.util.Date(timestamp)),
-                   dateSched = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new java.util.Date(schedule));
+                    dateSched = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new java.util.Date(schedule));
 
-            String text = "Scheduled SMS at " + dateNow + " to be sent at "+ dateSched;
+            String text = "Scheduled SMS at " + dateNow + " to be sent at " + dateSched;
             JsonObject options = Json.createObjectBuilder()
-                .add("schedule", dateSched)
-                .build();
+                    .add("schedule", dateSched)
+                    .build();
 
             boolean queued = sender.scheduledSMS(id, dst, text, options);
 
-            if(sender.errno != 0){
+            if (sender.errno != 0) {
                 System.err.println(sender.errno + ":" + sender.error);
                 System.err.println("");
             }
 
-            if(queued){
+            if (queued) {
                 Status status = sender.getStatusScheduled(id);
                 System.out.println("ID: " + id);
                 System.out.println("Status: " + status.getKey());
                 System.out.println("Status: " + status.getCode() + " => " + status.getDescription());
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.err.println(ex.toString());
         }
     }

@@ -10,7 +10,7 @@ import javax.json.JsonObject;
 public class send_unicode_sms {
 
     public static void main(String[] args) {
-        try{
+        try {
             Sender sender = new Sender(Config.USERNAME, Config.APIKEY);
             sender.setLogger(Config.RESOURCES_PATH + "logger.log");
 
@@ -18,26 +18,28 @@ public class send_unicode_sms {
 
             String id = Integer.toString(Math.abs(r.nextInt()));
             JsonArray dst = Json.createArrayBuilder().add(Config.RECIPIENT).build();
-            String dateNow = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new java.util.Date(System.currentTimeMillis()));
-            String text = "Unicode SMS sent at " + dateNow + " àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸ €";
+            String dateNow = new java.text.SimpleDateFormat("yyyyMMddHHmm")
+                    .format(new java.util.Date(System.currentTimeMillis()));
+            String text = "Unicode SMS sent at " + dateNow
+                    + " àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸ €";
             JsonObject options = Json.createObjectBuilder()
-                .add("unicode", "1")
-                .build();
+                    .add("unicode", "1")
+                    .build();
 
             boolean queued = sender.registeredSMS(id, dst, text, options);
 
-            if(sender.errno != 0){
+            if (sender.errno != 0) {
                 System.err.println(sender.errno + ":" + sender.error);
                 System.err.println("");
             }
 
-            if(queued){
+            if (queued) {
                 Status status = sender.getStatusSMS(id);
                 System.out.println("ID: " + id);
                 System.out.println("Status: " + status.getKey());
                 System.out.println("Status: " + status.getCode() + " => " + status.getDescription());
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.err.println(ex.toString());
         }
     }
